@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>마인드 동아리 혈압 입력</title>
+  <title>마인드 동아리 건강 정보 입력</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -59,7 +59,7 @@
 </head>
 <body>
   <div class="box-container">
-    <h1>마인드 동아리 혈압 입력</h1>
+    <h1>마인드 동아리 건강 정보 입력</h1>
     <h2>정보 입력</h2>
     <form id="userForm">
       <div class="form-group">
@@ -67,8 +67,16 @@
         <input type="text" id="name" name="name" required placeholder="이름을 입력하세요" />
       </div>
       <div class="form-group">
+        <label for="gender">성별</label>
+        <input type="text" id="gender" name="gender" required placeholder="성별을 입력하세요 (예: 남/여)" />
+      </div>
+      <div class="form-group">
         <label for="birthdate">생년월일</label>
         <input type="date" id="birthdate" name="birthdate" required />
+      </div>
+      <div class="form-group">
+        <label for="heartRate">심박수</label>
+        <input type="number" id="heartRate" name="heartRate" required placeholder="심박수를 입력하세요" />
       </div>
       <div class="form-group">
         <label for="bloodPressure">혈압</label>
@@ -83,11 +91,13 @@
       event.preventDefault();
 
       const name = document.getElementById('name').value.trim();
+      const gender = document.getElementById('gender').value.trim();
       const birthdate = document.getElementById('birthdate').value;
+      const heartRate = document.getElementById('heartRate').value;
       const bloodPressure = document.getElementById('bloodPressure').value;
 
-      if (name && birthdate && bloodPressure) {
-        const scriptURL = "https://script.google.com/macros/s/AKfycbx8Pse4LMh_J1QZ6LO7yWJzqiHOXOHRRLARRxHcTH3UNztDUDb18Z2Ugr5c-f6FCYL1TA/exec";
+      if (name && gender && birthdate && heartRate && bloodPressure) {
+        const scriptURL = "https://script.google.com/macros/s/AKfycbytg7VCMHtqQfGCrTc1dApKXtfzbydvt38QTGGB7HBfkimljX0bePeyeefRPCJhArhTmQ/exec"; 
 
         fetch(scriptURL, {
           method: "POST",
@@ -95,9 +105,11 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: name,
-            birthdate: birthdate,
-            bloodPressure: bloodPressure,
+            name,
+            gender,
+            birthdate,
+            heartRate,
+            bloodPressure,
           }),
         })
         .then((response) => {
