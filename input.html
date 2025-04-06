@@ -80,16 +80,35 @@
 
   <script>
     document.getElementById('userForm').addEventListener('submit', function (event) {
-      event.preventDefault(); // 기본 제출 막기
+      event.preventDefault();
 
       const name = document.getElementById('name').value.trim();
       const birthdate = document.getElementById('birthdate').value;
       const bloodPressure = document.getElementById('bloodPressure').value;
 
       if (name && birthdate && bloodPressure) {
-        // URL에 정보 담아 Check.html로 이동
-        const url = `Check.html?name=${encodeURIComponent(name)}&birthdate=${encodeURIComponent(birthdate)}&bloodPressure=${encodeURIComponent(bloodPressure)}`;
-        window.location.href = url;
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyjXJle2yepSYEe0qNxB72m5PQQ4Vecb5XpmnTIw5MQoQ2WiK4VUcEn_W4DxornkPk09w/exec";
+
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("birthdate", birthdate);
+        formData.append("bloodPressure", bloodPressure);
+
+        fetch(scriptURL, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("입력이 성공적으로 저장되었습니다.");
+              document.getElementById("userForm").reset();
+            } else {
+              alert("저장 중 오류가 발생했습니다.");
+            }
+          })
+          .catch((error) => {
+            alert("오류 발생: " + error.message);
+          });
       } else {
         alert("모든 정보를 입력해주세요.");
       }
