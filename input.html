@@ -87,28 +87,30 @@
       const bloodPressure = document.getElementById('bloodPressure').value;
 
       if (name && birthdate && bloodPressure) {
-        const scriptURL = "https://script.google.com/macros/s/AKfycbxGPFLCdAe2_o00ilO0ufjuxiuBBZOV8jgggdWmwt2w0LvUp7kEfgwLH_NnSTtGUGmFLA/exec";
-
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("birthdate", birthdate);
-        formData.append("bloodPressure", bloodPressure);
+        const scriptURL = "https://script.google.com/macros/s/AKfycbx8Pse4LMh_J1QZ6LO7yWJzqiHOXOHRRLARRxHcTH3UNztDUDb18Z2Ugr5c-f6FCYL1TA/exec";
 
         fetch(scriptURL, {
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            birthdate: birthdate,
+            bloodPressure: bloodPressure,
+          }),
         })
-          .then((response) => {
-            if (response.ok) {
-              alert("입력이 성공적으로 저장되었습니다.");
-              document.getElementById("userForm").reset();
-            } else {
-              alert("저장 중 오류가 발생했습니다.");
-            }
-          })
-          .catch((error) => {
-            alert("오류 발생: " + error.message);
-          });
+        .then((response) => {
+          if (response.ok) {
+            alert("입력이 성공적으로 저장되었습니다.");
+            document.getElementById("userForm").reset();
+          } else {
+            alert("저장 중 오류가 발생했습니다.");
+          }
+        })
+        .catch((error) => {
+          alert("오류 발생: " + error.message);
+        });
       } else {
         alert("모든 정보를 입력해주세요.");
       }
